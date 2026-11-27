@@ -129,4 +129,4 @@ GHCR's main tag is mutable: protect publishing permissions in the EATS applicati
 bun test --no-env-file deploy.test.ts
 ```
 
-No Docker daemon or npm packages are needed. The older Bash scripts in [legacy/](legacy/README.md) are archived, not active deployment entry points.
+No Docker daemon or npm packages are needed.
