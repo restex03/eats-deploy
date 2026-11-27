@@ -38,3 +38,26 @@ jobs:
       - name: Test deployment controller
         run: '"$RUNNER_TEMP/eats-bun" test --no-env-file deploy.test.ts'
 
+  compose:
+    name: Docker Compose validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          persist-credentials: false
+
+      - name: Validate shell syntax
+        run: bash -n infrastart.sh
+
+      - name: Validate Docker Compose configuration
+        env:
+          POSTGRES_PASSWORD: ci-placeholder-not-a-real-secret
+          LAN_IP: 192.0.2.10
+          WORKDAY_SOURCES_HOST_PATH: /tmp/ci-workdaySources.json
+          INGESTION_IMAGE_REPOSITORY: ghcr.io/restex03/eats-ingestion
+          INGESTION_IMAGE_TAG: main
+        run: |
+          docker compose -f compose.yaml config --quiet
+          docker compose -f compose.yaml -f compose.dev.yaml config --quiet
