@@ -1,0 +1,4 @@
+.env
+.env.*
+deploy-state/
+node_modules/
